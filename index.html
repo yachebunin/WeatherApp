@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="container">
+      <div id="city_input">
+        <input type="text" />
+        <span id="show">show</span>
+      </div>
+      <div id="city">Moscow</div>
+      <div id="condition">Cloudly</div>
+      <div id="weather_img"></div>
+      <div id="temperature"><span>0</span></div>
+      <div id="date">Monday, 15th Oct.</div>
+      <div id="average_temperature">
+        <span id="min_temperature">0</span>°/<span id="max_temperature">0</span
+        >°
+      </div>
+      <div id="week">
+        <div id="mon">
+          <div class="day">mon</div>
+          <div class="weather_day_img">
+            <img src="/images/bgc.jpg" alt="weather" />
+          </div>
+          <div class="average_temperature_day">
+            <span class="min_temperature">8</span>°/<span
+              class="max_temperature"
+              >11</span
+            >°
+          </div>
+        </div>
+
+        <div id="tue">
+          <div class="day">tue</div>
+          <div class="weather_day_img">
+            <img src="/images/bgc.jpg" alt="weather" />
+          </div>
+          <div class="average_temperature_day">
+            <span class="min_temperature">8</span>°/<span
+              class="max_temperature"
+              >11</span
+            >°
+          </div>
+        </div>
+
+        <div id="wen">
+          <div class="day">wen</div>
+          <div class="weather_day_img">
+            <img src="/images/bgc.jpg" alt="weather" />
+          </div>
+          <div class="average_temperature_day">
+            <span class="min_temperature">8</span>°/<span
+              class="max_temperature"
+              >11</span
+            >°
+          </div>
+        </div>
+
+        <div id="thu">
+          <div class="day">thu</div>
+          <div class="weather_day_img">
+            <img src="/images/bgc.jpg" alt="weather" />
+          </div>
+          <div class="average_temperature_day">
+            <span class="min_temperature">8</span>°/<span
+              class="max_temperature"
+              >11</span
+            >°
+          </div>
+        </div>
+
+        <div id="fri">
+          <div class="day">fri</div>
+          <div class="weather_day_img">
+            <img src="/images/bgc.jpg" alt="weather" />
+          </div>
+          <div class="average_temperature_day">
+            <span class="min_temperature">8</span>°/<span
+              class="max_temperature"
+              >11</span
+            >°
+          </div>
+        </div>
+
+        <div id="sat">
+          <div class="day">sat</div>
+          <div class="weather_day_img">
+            <img src="/images/bgc.jpg" alt="weather" />
+          </div>
+          <div class="average_temperature_day">
+            <span class="min_temperature">8</span>°/<span
+              class="max_temperature"
+              >11</span
+            >°
+          </div>
+        </div>
+
+        <div id="sun">
+          <div class="day">sun</div>
+          <div class="weather_day_img">
+            <img src="/images/bgc.jpg" alt="weather" />
+          </div>
+          <div class="average_temperature_day">
+            <span class="min_temperature">8</span>°/<span
+              class="max_temperature"
+              >11</span
+            >°
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let city_from_input = "Moscow";
+      let city_new_lon = 37.62;
+      let city_new_lat = 55.75;
+      let city_new_name = "Moscow";
+      let city_min = 273;
+      let city_max = 273;
+
+      create(city_new_lon, city_new_lat);
+
+      function find(city_from_input) {
+        fetch(
+          // первый запрос, город по умолчанию
+          "http://api.openweathermap.org/data/2.5/weather?q=" +
+            city_from_input +
+            "&lang=ru&appid=a9074f9b54bd255c2588b28061a0b18b"
+        )
+          .then(function (resp) {
+            return resp.json();
+          })
+          .then(function (data) {
+            if (data.coord.lon) {
+              city_new_lon = data.coord.lon;
+              city_new_lat = data.coord.lat;
+              city_new_name = data.name;
+              city_min = data.main.temp_min;
+              city_max = data.main.temp_max;
+            }
+
+            create(city_new_lon, city_new_lat);
+          })
+          .catch(function () {
+            //Обрабатываем ошибки
+          });
+      }
+
+      function create(city_new_lon, city_new_lat) {
+        fetch(
+          "https://api.openweathermap.org/data/2.5/onecall?lat=" +
+            city_new_lat +
+            "&lon=" +
+            city_new_lon +
+            "&exclude=hourly&lang=ru&appid=a9074f9b54bd255c2588b28061a0b18b"
+        )
+          .then(function (resp) {
+            return resp.json();
+          })
+          .then(function (data) {
+            console.log(data);
+
+            let today_data = new Date().getDay();
+
+            // let num_sun = 0;
+            // let num_mon = 1;
+            // let num_tue = 2;
+            // let num_wen = 3;
+            // let num_thu = 4;
+            // let num_fri = 5;
+            // let num_sat = 6;
+
+            let days = document
+              .getElementById("week")
+              .getElementsByClassName("day");
+
+            if (today_data == 0) {
+              days[0].innerHTML = "tue";
+              days[1].innerHTML = "wen";
+              days[2].innerHTML = "thu";
+              days[3].innerHTML = "fri";
+              days[4].innerHTML = "sat";
+              days[5].innerHTML = "sun";
+              days[6].innerHTML = "mon";
+            } else if (today_data == 1) {
+              days[0].innerHTML = "wen";
+              days[1].innerHTML = "thu";
+              days[2].innerHTML = "fri";
+              days[3].innerHTML = "sat";
+              days[4].innerHTML = "sun";
+              days[5].innerHTML = "mon";
+              days[6].innerHTML = "tue";
+            } else if (today_data == 2) {
+              days[0].innerHTML = "thu";
+              days[1].innerHTML = "fri";
+              days[2].innerHTML = "sat";
+              days[3].innerHTML = "sun";
+              days[4].innerHTML = "mon";
+              days[5].innerHTML = "tue";
+              days[6].innerHTML = "wen";
+            } else if (today_data == 3) {
+              days[0].innerHTML = "fri";
+              days[1].innerHTML = "sat";
+              days[2].innerHTML = "sun";
+              days[3].innerHTML = "mon";
+              days[4].innerHTML = "tue";
+              days[5].innerHTML = "wen";
+              days[6].innerHTML = "thu";
+            } else if (today_data == 4) {
+              days[0].innerHTML = "sat";
+              days[1].innerHTML = "sun";
+              days[2].innerHTML = "mon";
+              days[3].innerHTML = "tue";
+              days[4].innerHTML = "wen";
+              days[5].innerHTML = "thu";
+              days[6].innerHTML = "fri";
+            } else if (today_data == 5) {
+              days[0].innerHTML = "sun";
+              days[1].innerHTML = "mon";
+              days[2].innerHTML = "tue";
+              days[3].innerHTML = "wen";
+              days[4].innerHTML = "thu";
+              days[5].innerHTML = "fri";
+              days[6].innerHTML = "sat";
+            } else if (today_data == 6) {
+              days[0].innerHTML = "mon";
+              days[1].innerHTML = "tue";
+              days[2].innerHTML = "wen";
+              days[3].innerHTML = "thu";
+              days[4].innerHTML = "fri";
+              days[5].innerHTML = "sat";
+              days[6].innerHTML = "sun";
+            }
+
+            // добавляем погоду на неделю
+
+            let time = new Date().getHours();
+
+            // установим фон в зависимости от времени
+            if (time >= 0 && time < 6) {
+              document.getElementById("container").classList.add("night_time");
+            } else if (time >= 6 && time <= 16) {
+              document.getElementById("container").classList.add("day_time");
+            } else {
+              document
+                .getElementById("container")
+                .classList.add("evening_time");
+            }
+
+            //понедельник
+            document
+              .getElementById("mon")
+              .getElementsByClassName(
+                "weather_day_img"
+              )[0].innerHTML = `<img src="https://openweathermap.org/img/wn/${data.daily[0].weather[0].icon}@2x.png">`;
+
+            document
+              .getElementById("mon")
+              .getElementsByClassName(
+                "min_temperature"
+              )[0].innerHTML = Math.round(data.daily[0].temp.min - 273);
+
+            document
+              .getElementById("mon")
+              .getElementsByClassName(
+                "max_temperature"
+              )[0].innerHTML = Math.round(data.daily[0].temp.max - 273);
+
+            //вторник
+            document
+              .getElementById("tue")
+              .getElementsByClassName(
+                "weather_day_img"
+              )[0].innerHTML = `<img src="https://openweathermap.org/img/wn/${data.daily[1].weather[0].icon}@2x.png">`;
+
+            document
+              .getElementById("tue")
+              .getElementsByClassName(
+                "min_temperature"
+              )[0].innerHTML = Math.round(data.daily[1].temp.min - 273);
+
+            document
+              .getElementById("tue")
+              .getElementsByClassName(
+                "max_temperature"
+              )[0].innerHTML = Math.round(data.daily[1].temp.max - 273);
+
+            //среда
+
+            document
+              .getElementById("wen")
+              .getElementsByClassName(
+                "weather_day_img"
+              )[0].innerHTML = `<img src="https://openweathermap.org/img/wn/${data.daily[2].weather[0].icon}@2x.png">`;
+
+            document
+              .getElementById("wen")
+              .getElementsByClassName(
+                "min_temperature"
+              )[0].innerHTML = Math.round(data.daily[2].temp.min - 273);
+
+            document
+              .getElementById("wen")
+              .getElementsByClassName(
+                "max_temperature"
+              )[0].innerHTML = Math.round(data.daily[2].temp.max - 273);
+
+            //четверг
+
+            document
+              .getElementById("thu")
+              .getElementsByClassName(
+                "weather_day_img"
+              )[0].innerHTML = `<img src="https://openweathermap.org/img/wn/${data.daily[3].weather[0].icon}@2x.png">`;
+
+            document
+              .getElementById("thu")
+              .getElementsByClassName(
+                "min_temperature"
+              )[0].innerHTML = Math.round(data.daily[3].temp.min - 273);
+
+            document
+              .getElementById("thu")
+              .getElementsByClassName(
+                "max_temperature"
+              )[0].innerHTML = Math.round(data.daily[3].temp.max - 273);
+
+            //пятница
+
+            document
+              .getElementById("fri")
+              .getElementsByClassName(
+                "weather_day_img"
+              )[0].innerHTML = `<img src="https://openweathermap.org/img/wn/${data.daily[4].weather[0].icon}@2x.png">`;
+
+            document
+              .getElementById("fri")
+              .getElementsByClassName(
+                "min_temperature"
+              )[0].innerHTML = Math.round(data.daily[4].temp.min - 273);
+
+            document
+              .getElementById("fri")
+              .getElementsByClassName(
+                "max_temperature"
+              )[0].innerHTML = Math.round(data.daily[4].temp.max - 273);
+
+            //суббота
+
+            document
+              .getElementById("sat")
+              .getElementsByClassName(
+                "weather_day_img"
+              )[0].innerHTML = `<img src="https://openweathermap.org/img/wn/${data.daily[5].weather[0].icon}@2x.png">`;
+
+            document
+              .getElementById("sat")
+              .getElementsByClassName(
+                "min_temperature"
+              )[0].innerHTML = Math.round(data.daily[5].temp.min - 273);
+
+            document
+              .getElementById("sat")
+              .getElementsByClassName(
+                "max_temperature"
+              )[0].innerHTML = Math.round(data.daily[5].temp.max - 273);
+
+            //воскресенье
+
+            document
+              .getElementById("sun")
+              .getElementsByClassName(
+                "weather_day_img"
+              )[0].innerHTML = `<img src="https://openweathermap.org/img/wn/${data.daily[6].weather[0].icon}@2x.png">`;
+
+            document
+              .getElementById("sun")
+              .getElementsByClassName(
+                "min_temperature"
+              )[0].innerHTML = Math.round(data.daily[6].temp.min - 273);
+
+            document
+              .getElementById("sun")
+              .getElementsByClassName(
+                "max_temperature"
+              )[0].innerHTML = Math.round(data.daily[6].temp.max - 273);
+
+            //добавляем название города
+            document.querySelector("#city").textContent = city_new_name;
+            //data.main.temp содержит значение в Кельвинах, отнимаем от  273, чтобы получить значение в градусах Цельсия
+            document
+              .getElementById("temperature")
+              .getElementsByTagName("span")[0].innerHTML =
+              Math.round(data.current.temp - 273) + "&deg;";
+            //Добавляем описание погоды
+            document.querySelector("#condition").textContent =
+              data.current.weather[0]["description"];
+            //Добавляем иконку погоды
+            document.querySelector(
+              "#weather_img"
+            ).innerHTML = `<img src="https://openweathermap.org/img/wn/${data.current.weather[0]["icon"]}@2x.png">`;
+            // Добавляем минимальную, а затем макс. температуру
+            document.getElementById("min_temperature").textContent = Math.round(
+              city_min - 273
+            );
+            document.getElementById("max_temperature").textContent = Math.round(
+              city_max - 273
+            );
+
+            // добавляем день недели
+            let today = new Date().getDay();
+
+            switch (today) {
+              case 0:
+                today = "Sun";
+                break;
+
+              case 1:
+                today = "Mon";
+                break;
+
+              case 2:
+                today = "Tue";
+                break;
+
+              case 3:
+                today = "Wen";
+                break;
+
+              case 4:
+                today = "Thu";
+                break;
+
+              case 5:
+                today = "Fri";
+                break;
+
+              case 6:
+                today = "Sat";
+                break;
+            }
+
+            // устанавливаем дату
+            document.getElementById("date").textContent =
+              today +
+              ", " +
+              new Date().getDate() +
+              "." +
+              (new Date().getMonth() + 1) +
+              "." +
+              new Date().getFullYear();
+          })
+          .catch(function () {
+            //Обрабатываем ошибки
+          });
+      }
+
+      show.addEventListener("click", function (event) {
+        city_from_input = document.querySelector("input").value;
+
+        document.querySelector("input").value = "";
+
+        find(city_from_input);
+      });
+    </script>
+  </body>
+</html>

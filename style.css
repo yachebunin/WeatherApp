@@ -1,0 +1,117 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap");
+
+*:not(input) {
+  font-family: "Noto Sans JP", sans-serif;
+  color: #fff;
+}
+
+body {
+  background-color: #85d6fb;
+}
+
+#city_input {
+  transform: translateY(30px);
+}
+
+#city_input > input {
+  font-family: "Noto Sans JP", sans-serif;
+  border-radius: 10px;
+  padding: 5px;
+  box-sizing: border-box;
+  outline: none;
+  text-align: center;
+}
+
+#show {
+  background-color: #000;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+#show:hover {
+  cursor: pointer;
+}
+
+#show:active {
+  background-color: rgb(34, 112, 148);
+  border: 0px;
+}
+
+#container {
+  margin: 20px auto;
+  text-align: center;
+  /* background: linear-gradient(0deg, rgb(117, 205, 249), rgb(70, 107, 180)); */
+  height: 700px;
+  width: 500px;
+  border-radius: 15px;
+  border: 3px solid #4e5769;
+}
+
+#city {
+  display: inline-block;
+  margin-top: 50px;
+  font-size: 3em;
+  letter-spacing: 3px;
+}
+
+#condition {
+  font-size: 1.3em;
+}
+
+#weather_img {
+  margin-top: 30px;
+}
+
+#temperature {
+  font-size: 6em;
+  font-weight: 400;
+}
+
+/* #temperature > span {
+  margin-left: 40px;
+} */
+
+#date,
+#average_temperature {
+  font-size: 1.5em;
+}
+
+#week {
+  margin-top: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-flow: row nowrap;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: rgba(34, 112, 148, 0.3);
+}
+
+.weather_day_img {
+  border-radius: 50px;
+  overflow: hidden;
+  width: 59px;
+  height: 59px;
+}
+
+.weather_day_img > img {
+  height: 60px;
+}
+
+.day,
+.average_temperature_day {
+  text-transform: uppercase;
+  font-size: 1.1em;
+}
+
+.night_time {
+  background: top / cover no-repeat url("/images/night.jpg");
+}
+
+.day_time {
+  background: center / cover no-repeat url("/images/day.jpg");
+}
+
+.evening_time {
+  background: url("/images/evening.jpg");
+}
